@@ -48,8 +48,12 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Configure Database
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (!string.IsNullOrEmpty(connectionString))
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlite(connectionString));
+}
 
 // Configure JWT Authentication
 var jwtKey = builder.Configuration["Jwt:Key"] ?? throw new InvalidOperationException("JWT Key not configured");
@@ -87,11 +91,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Create database if it doesn't exist
-using (var scope = app.Services.CreateScope())
+// Create database if it doesn't exist (only if not testing)
+if (!string.IsNullOrEmpty(app.Configuration.GetConnectionString("DefaultConnection")))
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.EnsureCreated();
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        dbContext.Database.EnsureCreated();
+    }
 }
 
 // Configure the HTTP request pipeline
@@ -108,3 +115,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+// Make Program class accessible to tests
+public partial class Program { }
