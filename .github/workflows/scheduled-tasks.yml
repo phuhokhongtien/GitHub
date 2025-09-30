@@ -1,0 +1,40 @@
+name: Scheduled Task Processor
+
+on:
+  schedule:
+    # Run every hour to check for pending tasks
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    inputs:
+      force_run:
+        description: 'Force run all pending tasks'
+        required: false
+        default: 'false'
+
+jobs:
+  process-tasks:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          
+      - name: Process pending tasks
+        run: |
+          if [ -f task_processor.py ]; then
+            python task_processor.py
+          else
+            echo "No task processor found, skipping..."
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

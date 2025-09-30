@@ -1,0 +1,4 @@
+{
+  "delay_hours": 10,
+  "description": "Configuration for task scheduling with 10-hour delay to manage premium quota"
+}
