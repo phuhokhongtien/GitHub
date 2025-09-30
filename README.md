@@ -15,6 +15,8 @@ A React Native application with comprehensive voice processing capabilities incl
 
 ## Quick Start
 
+## Quick Start
+
 ### Installation
 
 ```bash
@@ -59,10 +61,13 @@ function App() {
 
 ## Documentation
 
-- 📚 [Complete Documentation](./VOICE_DOCUMENTATION.md) - Detailed API reference and guides
+📖 **Complete Documentation**
+- 🚀 [Setup Guide](./SETUP_GUIDE.md) - Installation and configuration instructions
+- 📚 [API Reference](./API_REFERENCE.md) - Detailed API documentation
 - 💡 [Usage Examples](./USAGE_EXAMPLES.md) - Practical examples and code snippets
+- 🎤 [Voice Documentation](./VOICE_DOCUMENTATION.md) - Voice features guide
 
-## Project Structure
+## Quick Start
 
 ```
 ├── src/
