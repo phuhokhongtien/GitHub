@@ -132,7 +132,15 @@ function updateCharts(stats) {
 }
 
 function updateTimelineChart(timeline) {
-    const ctx = document.getElementById('timelineChart').getContext('2d');
+    const canvas = document.getElementById('timelineChart');
+    
+    // Check if Chart.js is available
+    if (typeof Chart === 'undefined') {
+        canvas.parentElement.innerHTML = '<div style="padding: 20px; text-align: center; color: #7f8c8d;">Chart.js not available. Charts require an internet connection or local Chart.js library.</div>';
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
     
     const dates = Object.keys(timeline).sort();
     const data = dates.map(date => timeline[date].total);
@@ -172,7 +180,15 @@ function updateTimelineChart(timeline) {
 }
 
 function updateUsageChart(actionBreakdown) {
-    const ctx = document.getElementById('usageChart').getContext('2d');
+    const canvas = document.getElementById('usageChart');
+    
+    // Check if Chart.js is available
+    if (typeof Chart === 'undefined') {
+        canvas.parentElement.innerHTML = '<div style="padding: 20px; text-align: center; color: #7f8c8d;">Chart.js not available. Charts require an internet connection or local Chart.js library.</div>';
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
     
     const actions = Object.keys(actionBreakdown);
     const counts = Object.values(actionBreakdown);
@@ -210,7 +226,15 @@ function updateUsageChart(actionBreakdown) {
 }
 
 function updateVoiceChart(voiceStats) {
-    const ctx = document.getElementById('voiceChart').getContext('2d');
+    const canvas = document.getElementById('voiceChart');
+    
+    // Check if Chart.js is available
+    if (typeof Chart === 'undefined') {
+        canvas.parentElement.innerHTML = '<div style="padding: 20px; text-align: center; color: #7f8c8d;">Chart.js not available. Charts require an internet connection or local Chart.js library.</div>';
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
     
     if (charts.voice) {
         charts.voice.destroy();
@@ -244,7 +268,15 @@ function updateVoiceChart(voiceStats) {
 }
 
 function updateErrorChart(errorStats) {
-    const ctx = document.getElementById('errorChart').getContext('2d');
+    const canvas = document.getElementById('errorChart');
+    
+    // Check if Chart.js is available
+    if (typeof Chart === 'undefined') {
+        canvas.parentElement.innerHTML = '<div style="padding: 20px; text-align: center; color: #7f8c8d;">Chart.js not available. Charts require an internet connection or local Chart.js library.</div>';
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
     
     if (charts.error) {
         charts.error.destroy();
