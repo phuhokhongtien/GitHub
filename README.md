@@ -42,9 +42,19 @@ npm run dev     # Start development server
 
 ## Documentation
 
+### 📖 Getting Started
+- **[Quick Setup Guide](docs/QUICK_SETUP.md)** - Step-by-step setup instructions
+- **[Implementation Summary](docs/IMPLEMENTATION_SUMMARY.md)** - Overview of what's included
+- **[Setup Checklist](docs/CHECKLIST.md)** - Complete checklist for CI/CD setup
+
+### 🔧 Technical Guides
 - **[CI/CD Documentation](docs/ci-cd.md)** - Comprehensive guide to our CI/CD pipelines
 - **[Project Structure](docs/project-structure.md)** - Detailed project organization and setup
-- **[Contributing](#contributing)** - How to contribute to this project
+- **[Environment Variables](docs/environment-variables.md)** - Environment configuration guide
+- **[Workflow Diagrams](docs/workflow-diagrams.md)** - Visual representation of CI/CD flows
+
+### 🤝 Contributing
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to this project
 
 ## CI/CD Pipeline
 
