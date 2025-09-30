@@ -3,6 +3,26 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+
+# Docker volumes
+postgres_data/
+redis_data/
+
 # User-specific files
 *.rsuser
 *.suo
