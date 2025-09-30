@@ -348,3 +348,9 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Backend specific
+backend/.env
+backend/dist
+backend/node_modules
+backend/.prisma
