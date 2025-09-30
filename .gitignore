@@ -348,3 +348,41 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# React Native
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OSX
+.DS_Store
+
+# Android/IntelliJ
+android/.idea
+android/.gradle
+local.properties
+*.iml
+
+# iOS
+ios/Pods/
+ios/build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Bundle artifact
+*.jsbundle
+
+# CocoaPods
+/ios/Pods/
+
+# Expo
+.expo/
+.expo-shared/
+
+# Environment
+.env
+.env.local
