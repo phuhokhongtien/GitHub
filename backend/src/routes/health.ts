@@ -8,7 +8,7 @@ const router = Router();
  * Health check endpoint
  * GET /health
  */
-router.get('/health', async (req: Request, res: Response) => {
+router.get('/health', async (_req: Request, res: Response) => {
   try {
     // Check database connection
     await prisma.$queryRaw`SELECT 1`;

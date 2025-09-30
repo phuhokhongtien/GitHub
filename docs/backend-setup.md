@@ -9,6 +9,7 @@ Before you begin, ensure you have the following installed:
 - **Node.js** (v20 or higher) - [Download](https://nodejs.org/)
 - **Docker** and **Docker Compose** - [Download](https://www.docker.com/get-started)
 - **npm** or **yarn** package manager
+- **Internet access** for downloading Prisma engines (first-time setup only)
 
 ## Architecture Overview
 
