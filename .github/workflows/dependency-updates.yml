@@ -1,0 +1,164 @@
+name: Dependency Updates
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-dependencies:
+    name: Check for Dependency Updates
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        project: [mobile, backend]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Check for outdated packages
+        id: outdated
+        working-directory: ${{ matrix.project }}
+        run: |
+          npm outdated --json > outdated.json || true
+          if [ -s outdated.json ]; then
+            echo "has_updates=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create issue for updates
+        if: steps.outdated.outputs.has_updates == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const outdated = JSON.parse(fs.readFileSync('${{ matrix.project }}/outdated.json', 'utf8'));
+            
+            let body = '## Outdated Dependencies in ${{ matrix.project }}\n\n';
+            body += 'The following packages have updates available:\n\n';
+            body += '| Package | Current | Wanted | Latest |\n';
+            body += '|---------|---------|--------|--------|\n';
+            
+            for (const [name, info] of Object.entries(outdated)) {
+              body += `| ${name} | ${info.current} | ${info.wanted} | ${info.latest} |\n`;
+            }
+            
+            body += '\n## Action Required\n\n';
+            body += 'Please review these updates and create a PR to update dependencies.\n\n';
+            body += '```bash\n';
+            body += 'cd ${{ matrix.project }}\n';
+            body += 'npm update  # For minor updates\n';
+            body += '# or\n';
+            body += 'npm install package@latest  # For major updates (review breaking changes)\n';
+            body += '```\n';
+            
+            // Check if issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'dependencies,${{ matrix.project }}'
+            });
+            
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '[Dependencies] Updates available for ${{ matrix.project }}',
+                body: body,
+                labels: ['dependencies', '${{ matrix.project }}', 'maintenance']
+              });
+            }
+
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        project: [mobile, backend]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Run npm audit
+        working-directory: ${{ matrix.project }}
+        run: |
+          npm audit --json > audit.json || true
+      
+      - name: Check for vulnerabilities
+        id: audit
+        working-directory: ${{ matrix.project }}
+        run: |
+          if jq -e '.metadata.vulnerabilities.high > 0 or .metadata.vulnerabilities.critical > 0' audit.json > /dev/null; then
+            echo "has_vulns=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_vulns=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create security issue
+        if: steps.audit.outputs.has_vulns == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const audit = JSON.parse(fs.readFileSync('${{ matrix.project }}/audit.json', 'utf8'));
+            
+            let body = '## 🚨 Security Vulnerabilities Detected in ${{ matrix.project }}\n\n';
+            body += `**Critical**: ${audit.metadata.vulnerabilities.critical}\n`;
+            body += `**High**: ${audit.metadata.vulnerabilities.high}\n`;
+            body += `**Moderate**: ${audit.metadata.vulnerabilities.moderate}\n`;
+            body += `**Low**: ${audit.metadata.vulnerabilities.low}\n\n`;
+            
+            body += '## Action Required\n\n';
+            body += 'Please run the following commands to fix vulnerabilities:\n\n';
+            body += '```bash\n';
+            body += 'cd ${{ matrix.project }}\n';
+            body += 'npm audit fix\n';
+            body += '# If that doesn\'t fix all issues:\n';
+            body += 'npm audit fix --force  # Review breaking changes\n';
+            body += '```\n\n';
+            body += '## Details\n\n';
+            body += 'Run `npm audit` in the ${{ matrix.project }} directory for full details.\n';
+            
+            // Check if issue already exists
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'security,${{ matrix.project }}'
+            });
+            
+            if (issues.data.length === 0) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: '[Security] Vulnerabilities detected in ${{ matrix.project }}',
+                body: body,
+                labels: ['security', '${{ matrix.project }}', 'priority-high']
+              });
+            }
+      
+      - name: Upload audit results
+        if: steps.audit.outputs.has_vulns == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-audit-${{ matrix.project }}
+          path: ${{ matrix.project }}/audit.json

@@ -1,0 +1,107 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  pr-validation:
+    name: Validate PR
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check PR title format
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+      
+      - name: Check for merge conflicts
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git merge-tree $(git merge-base HEAD origin/${{ github.base_ref }}) HEAD origin/${{ github.base_ref }} | grep -q "^changed in both" && exit 1 || exit 0
+      
+      - name: Assign reviewers
+        if: github.event.action == 'opened'
+        uses: kentaro-m/auto-assign-action@v1.2.5
+        with:
+          configuration-path: '.github/auto-assign.yml'
+  
+  check-changes:
+    name: Detect Changed Components
+    runs-on: ubuntu-latest
+    outputs:
+      mobile: ${{ steps.filter.outputs.mobile }}
+      backend: ${{ steps.filter.outputs.backend }}
+      docs: ${{ steps.filter.outputs.docs }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check for file changes
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            mobile:
+              - 'mobile/**'
+            backend:
+              - 'backend/**'
+            docs:
+              - 'docs/**'
+              - '*.md'
+      
+      - name: Comment on PR
+        if: github.event.action == 'opened'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const mobile = '${{ steps.filter.outputs.mobile }}' === 'true';
+            const backend = '${{ steps.filter.outputs.backend }}' === 'true';
+            const docs = '${{ steps.filter.outputs.docs }}' === 'true';
+            
+            let message = '## 🤖 Automated PR Analysis\n\n';
+            message += '**Components affected:**\n';
+            if (mobile) message += '- 📱 Mobile App\n';
+            if (backend) message += '- 🔧 Backend API\n';
+            if (docs) message += '- 📚 Documentation\n';
+            if (!mobile && !backend && !docs) message += '- ⚙️ Configuration/Other\n';
+            
+            message += '\n**Required checks:**\n';
+            if (mobile) {
+              message += '- ✅ Mobile CI workflow\n';
+              message += '- ✅ Unit tests for mobile\n';
+              message += '- ✅ Android and iOS builds\n';
+            }
+            if (backend) {
+              message += '- ✅ Backend CI workflow\n';
+              message += '- ✅ Unit and integration tests\n';
+              message += '- ✅ Docker image build\n';
+            }
+            if (docs) {
+              message += '- ✅ Documentation review\n';
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });

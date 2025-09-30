@@ -1,0 +1,25 @@
+# CODEOWNERS file for automatic reviewer assignment
+# See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repo
+* @phuhokhongtien
+
+# Mobile app code
+/mobile/ @phuhokhongtien
+
+# Backend code
+/backend/ @phuhokhongtien
+
+# CI/CD workflows
+/.github/workflows/ @phuhokhongtien
+
+# Documentation
+/docs/ @phuhokhongtien
+*.md @phuhokhongtien
+
+# Configuration files
+*.yml @phuhokhongtien
+*.yaml @phuhokhongtien
+*.json @phuhokhongtien
+Dockerfile @phuhokhongtien
+docker-compose.yml @phuhokhongtien
