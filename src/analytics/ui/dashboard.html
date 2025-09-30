@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>Analytics Dashboard</h1>
+            <div class="header-controls">
+                <select id="tenantFilter" class="filter-select">
+                    <option value="">All Tenants</option>
+                </select>
+                <select id="timeRangeFilter" class="filter-select">
+                    <option value="today">Today</option>
+                    <option value="week">Last 7 Days</option>
+                    <option value="month" selected>Last 30 Days</option>
+                    <option value="all">All Time</option>
+                </select>
+                <button id="refreshBtn" class="btn btn-primary">Refresh</button>
+            </div>
+        </header>
+
+        <div class="privacy-banner" id="privacyBanner">
+            <div class="banner-content">
+                <p>
+                    <strong>Privacy Notice:</strong> We collect analytics data to improve your experience.
+                    <a href="#" id="privacyLink">Learn more about our privacy policy</a>
+                </p>
+                <div class="banner-actions">
+                    <button id="enableAnalytics" class="btn btn-success">Enable Analytics</button>
+                    <button id="disableAnalytics" class="btn btn-secondary">Disable</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3>Usage Statistics</h3>
+                    <span class="metric-icon">📊</span>
+                </div>
+                <div class="metric-body">
+                    <div class="metric-value" id="totalActions">0</div>
+                    <div class="metric-label">Total Actions</div>
+                    <div class="metric-details">
+                        <div>Average Duration: <span id="avgDuration">0</span>s</div>
+                        <div>Total Time: <span id="totalDuration">0</span>s</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3>Voice Commands</h3>
+                    <span class="metric-icon">🎤</span>
+                </div>
+                <div class="metric-body">
+                    <div class="metric-value" id="totalCommands">0</div>
+                    <div class="metric-label">Commands Processed</div>
+                    <div class="metric-details">
+                        <div>Success Rate: <span id="commandSuccessRate">0</span>%</div>
+                        <div>Avg Response: <span id="avgResponseTime">0</span>ms</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3>Server Connectivity</h3>
+                    <span class="metric-icon">🌐</span>
+                </div>
+                <div class="metric-body">
+                    <div class="metric-value" id="totalRequests">0</div>
+                    <div class="metric-label">Total Requests</div>
+                    <div class="metric-details">
+                        <div>Success Rate: <span id="connSuccessRate">0</span>%</div>
+                        <div>Avg Latency: <span id="avgLatency">0</span>ms</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-header">
+                    <h3>Errors</h3>
+                    <span class="metric-icon">⚠️</span>
+                </div>
+                <div class="metric-body">
+                    <div class="metric-value" id="totalErrors">0</div>
+                    <div class="metric-label">Total Errors</div>
+                    <div class="metric-details">
+                        <div>Critical: <span id="criticalErrors">0</span></div>
+                        <div>High: <span id="highErrors">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-section">
+            <div class="chart-card">
+                <h3>Activity Timeline</h3>
+                <canvas id="timelineChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Usage Breakdown</h3>
+                <canvas id="usageChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Voice Command Analysis</h3>
+                <canvas id="voiceChart"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Error Distribution</h3>
+                <canvas id="errorChart"></canvas>
+            </div>
+        </div>
+
+        <div class="insights-section">
+            <h2>Actionable Insights</h2>
+            <div id="insightsList" class="insights-list">
+                <!-- Insights will be dynamically populated -->
+            </div>
+        </div>
+
+        <div class="data-table-section">
+            <h2>Recent Activity</h2>
+            <table class="data-table" id="recentActivityTable">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Type</th>
+                        <th>User</th>
+                        <th>Tenant</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will be dynamically populated -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Privacy Policy & Analytics</h2>
+            <div class="privacy-content">
+                <h3>What We Collect</h3>
+                <ul>
+                    <li>Usage patterns and feature interactions</li>
+                    <li>Voice command statistics (anonymized)</li>
+                    <li>Server connectivity and performance metrics</li>
+                    <li>Error logs and diagnostic information</li>
+                </ul>
+                
+                <h3>How We Use Your Data</h3>
+                <ul>
+                    <li>Improve application performance and reliability</li>
+                    <li>Identify and fix bugs and errors</li>
+                    <li>Enhance user experience based on usage patterns</li>
+                    <li>Generate aggregated insights for administrators</li>
+                </ul>
+                
+                <h3>Your Rights</h3>
+                <ul>
+                    <li>You can opt-in or opt-out of analytics at any time</li>
+                    <li>Your data is stored locally and can be cleared</li>
+                    <li>No personally identifiable information is shared with third parties</li>
+                    <li>You have the right to request deletion of your analytics data</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="../models/AnalyticsModels.js"></script>
+    <script src="../services/AnalyticsService.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
