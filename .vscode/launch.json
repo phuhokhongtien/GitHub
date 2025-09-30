@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to packager",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnative",
+      "request": "attach"
+    },
+    {
+      "name": "Run Android",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "android"
+    },
+    {
+      "name": "Run iOS",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "ios"
+    },
+    {
+      "name": "Debug Android",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "android",
+      "sourceMaps": true,
+      "outDir": "${workspaceFolder}/.vscode/.react"
+    },
+    {
+      "name": "Debug iOS",
+      "cwd": "${workspaceFolder}",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "ios",
+      "sourceMaps": true,
+      "outDir": "${workspaceFolder}/.vscode/.react"
+    }
+  ]
+}
