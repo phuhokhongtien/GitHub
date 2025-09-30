@@ -1,0 +1,12 @@
+{
+  "welcome": "Welcome to Kendy MCP Assistant",
+  "home": "Home",
+  "chat": "Chat",
+  "settings": "Settings",
+  "language": "Language",
+  "voiceInput": "Voice Input",
+  "textToSpeech": "Text to Speech",
+  "send": "Send",
+  "typemessage": "Type a message...",
+  "loading": "Loading..."
+}
