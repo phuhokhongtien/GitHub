@@ -1,3 +1,6 @@
+/* eslint-env jest */
+/* eslint-disable @react-native/no-deep-imports */
+
 // Mock native modules for Jest
 jest.mock('react-native-gesture-handler', () => {
   const View = require('react-native/Libraries/Components/View/View');
