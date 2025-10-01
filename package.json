@@ -1,0 +1,34 @@
+{
+  "name": "github-outsourcing",
+  "version": "1.0.0",
+  "description": "Out-Sourcing project with React Native and Node.js backend",
+  "private": true,
+  "scripts": {
+    "setup": "npm run setup:backend && npm run setup:app",
+    "setup:backend": "cd backend && npm install",
+    "setup:app": "cd app && npm install",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:app\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:app": "cd app && npm start",
+    "start:backend": "cd backend && npm start",
+    "start:app": "cd app && npm start",
+    "build:backend": "cd backend && npm run build",
+    "build:app:android": "cd app && npm run build:android",
+    "build:app:ios": "cd app && npm run build:ios",
+    "test": "npm run test:backend && npm run test:app",
+    "test:backend": "cd backend && npm test",
+    "test:app": "cd app && npm test",
+    "lint": "npm run lint:backend && npm run lint:app",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:app": "cd app && npm run lint",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "clean": "npm run clean:backend && npm run clean:app",
+    "clean:backend": "cd backend && rm -rf node_modules dist",
+    "clean:app": "cd app && rm -rf node_modules .expo .expo-shared"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
