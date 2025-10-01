@@ -4,7 +4,7 @@ import redisClient from '../config/redis';
 
 const router = Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', async (_req: Request, res: Response) => {
   try {
     const dbHealthy = await checkDatabase();
     const redisHealthy = await checkRedis();

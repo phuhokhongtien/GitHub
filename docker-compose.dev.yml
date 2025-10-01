@@ -1,3 +1,4 @@
+# Development-only docker-compose for running just PostgreSQL and Redis
 services:
   postgres:
     image: postgres:16-alpine
@@ -30,28 +31,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: kendy-backend
-    restart: unless-stopped
-    ports:
-      - "${BACKEND_PORT:-3000}:3000"
-    environment:
-      NODE_ENV: ${NODE_ENV:-production}
-      PORT: 3000
-      DATABASE_URL: postgresql://${POSTGRES_USER:-kendy_user}:${POSTGRES_PASSWORD:-kendy_password}@postgres:5432/${POSTGRES_DB:-kendy_db}
-      REDIS_URL: redis://redis:6379
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
 
 volumes:
   postgres_data:

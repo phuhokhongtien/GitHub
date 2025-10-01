@@ -5,7 +5,7 @@ const router = Router();
 
 router.use('/health', healthRouter);
 
-router.get('/', (req, res) => {
+router.get('/', (_req, res) => {
   res.json({
     message: 'Kendy MCP Assistant API',
     version: '1.0.0',
