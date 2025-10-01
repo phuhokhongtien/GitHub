@@ -348,3 +348,54 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.npm
+.eslintcache
+.yarn-integrity
+
+# React Native
+*.jsbundle
+*.bundle
+
+# Android
+*.apk
+*.aab
+.gradle
+local.properties
+*.iml
+.idea
+.DS_Store
+*.hprof
+.cxx/
+
+# iOS
+*.ipa
+*.xcuserstate
+*.xcworkspace/xcuserdata
+Pods/
+DerivedData/
+build/
+
+# Testing
+coverage/
+.nyc_output
+*.lcov
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build output
+dist/
+build/
+out/
+
+# Docker
+*.log
