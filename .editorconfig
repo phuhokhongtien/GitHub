@@ -49,3 +49,15 @@ indent_style = tab
 #
 # [*.{java,kt}]
 # indent_size = 4
+=======
+[*.{js,jsx,ts,tsx,json,yml,yaml}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[*.py]
+indent_size = 4
+
+[Makefile]
+indent_style = tab
